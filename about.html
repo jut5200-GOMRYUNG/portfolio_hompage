@@ -1,0 +1,655 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — Portfolio</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,200;0,300;0,400;0,500;0,700;0,900;1,200;1,300&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    /* ── Base ────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: #1A1A1A url('hero/3.png') center/cover no-repeat fixed;
+      color: #EDEDEB;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    body::before { content: ''; position: fixed; inset: 0; background: rgba(18,18,18,0.80); z-index: 0; pointer-events: none; }
+    #nav, section, footer { position: relative; z-index: 1; }
+
+    ::-webkit-scrollbar       { width: 3px; }
+    ::-webkit-scrollbar-track { background: #1A1A1A; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
+
+    /* ── Scroll reveal ────────────────────────────────────────── */
+    .r { opacity:0; transform:translateY(28px); transition:opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1); }
+    .r.on { opacity:1; transform:translateY(0); }
+    .d1 { transition-delay:0.1s; } .d2 { transition-delay:0.22s; }
+    .d3 { transition-delay:0.36s; } .d4 { transition-delay:0.5s; }
+    @media(prefers-reduced-motion:reduce){ .r { opacity:1; transform:none; transition:none; } }
+
+    /* ── NAV ─────────────────────────────────────────────────── */
+    #nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200; transition: transform 0.3s ease;
+      background: transparent;
+    }
+    .nav-hidden { transform: translateY(-100%); }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 26px 60px;
+    }
+    .nav-logo {
+      font-family: 'Archivo', sans-serif; font-weight: 300;
+      font-size: 1rem; color: #EDEDEB; letter-spacing: 0.18em;
+      text-transform: uppercase; text-decoration: none; user-select: none; margin-right: auto;
+    }
+    .nav-links { display: flex; align-items: center; gap: 44px; margin-right: 4%; }
+    .nav-link {
+      font-size: 0.65rem; color: rgba(237,237,235,0.48);
+      letter-spacing: 0.22em; text-transform: uppercase;
+      text-decoration: none; transition: color 0.2s;
+    }
+    .nav-link:hover  { color: #EDEDEB; }
+    .nav-link.active { color: #EDEDEB; }
+    .nav-dots {
+      display: grid; grid-template-columns: repeat(3,4px); gap: 4px;
+      opacity: 0.35; transition: opacity 0.2s; cursor: pointer;
+    }
+    .nav-dots:hover { opacity: 0.75; }
+    .nav-dots span { width:3px; height:3px; border-radius:50%; background:#EDEDEB; display:block; }
+    #mob-btn  { display:none; background:none; border:none; cursor:pointer; color:rgba(237,237,235,0.55); }
+    #mob-menu {
+      display: none; padding: 14px 24px 22px;
+      background: rgba(9,9,15,0.96); backdrop-filter: blur(24px);
+          }
+    #mob-menu a {
+      display: block; padding: 11px 0;
+      font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(237,237,235,0.45); text-decoration: none;
+      border-bottom: 1px solid rgba(255,255,255,0.05); transition: color 0.2s;
+    }
+    #mob-menu a:last-child { border-bottom: none; }
+    #mob-menu a:hover, #mob-menu a.active { color: #EDEDEB; }
+    .nav-divider { height:1px; width:50%; margin-left:auto; background:rgba(237,237,235,0.12); }
+    @media(max-width:900px){ .nav-divider { width:70%; } }
+    @media(max-width:900px){
+      .nav-links { display:none; margin-right: 4%; } .nav-dots { display:none; }
+      #mob-btn  { display:block; } .nav-inner { padding: 20px 24px; }
+      #mob-menu { padding: 14px 24px 20px; }
+    }
+
+    /* ── Shared background wrap (DESIGNER + ABOUT) ──────────── */
+    .top-bg-wrap {
+      position: relative;
+      background: #1A1A1A url('hero/1.png') center/cover no-repeat;
+    }
+    .top-bg-wrap::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: rgba(26,26,26,0.85);
+      pointer-events: none;
+    }
+
+    /* ── Page header ─────────────────────────────────────────── */
+    .page-header {
+      padding: 128px 60px 58px;
+      position: relative;
+      overflow: hidden;
+      background: transparent;
+    }
+    .page-header-ghost {
+      position: absolute; top: 60px; right: -20px;
+      font-family: 'Archivo', sans-serif; font-weight: 900;
+      font-size: clamp(8rem, 20vw, 18rem); line-height: 1;
+      color: rgba(255,255,255,0.04); letter-spacing: -0.04em;
+      pointer-events: none; user-select: none; white-space: nowrap;
+      z-index: 1;
+    }
+    .page-header-label {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 0.62rem; color: #22D3EE;
+      letter-spacing: 0.28em; text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .page-header-label::before {
+      content: ''; width: 24px; height: 1px; background: #22D3EE;
+    }
+    .page-header h1 {
+      font-family: 'Archivo', sans-serif; font-weight: 300;
+      font-size: clamp(3.5rem, 8vw, 7rem);
+      line-height: 0.95; color: #EDEDEB;
+      letter-spacing: -0.03em;
+    }
+    @media(max-width:768px){
+      .page-header { padding: 96px 24px 45px; }
+    }
+
+    /* ── Section label (shared) ────────────────────────────────── */
+    .sec-label {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 36px;
+    }
+    .sec-num  { font-size: 0.62rem; color: #22D3EE; letter-spacing: 0.2em; }
+    .sec-line { flex: 1; height: 1px; background: rgba(34,211,238,0.3); max-width: 80px; }
+    .sec-tag  { font-size: 0.62rem; color: #22D3EE; letter-spacing: 0.2em; text-transform: uppercase; }
+
+    /* ── ABOUT section ───────────────────────────────────────── */
+    #about {
+      padding: 80px 60px 64px;
+      position: relative;
+      background: transparent;
+    }
+    .ghost-num {
+      display: none; position: absolute; top: 40px; right: 60px;
+      font-family: 'Archivo', sans-serif; font-weight: 900;
+      font-size: clamp(8rem, 18vw, 15rem); line-height: 1;
+      color: rgba(255,255,255,0.025); letter-spacing: -0.04em;
+      pointer-events: none; user-select: none;
+    }
+    .about-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+      position: relative; z-index: 1;
+    }
+    .about-h2 {
+      font-family: 'Archivo', sans-serif; font-weight: 900;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      line-height: 1.12; letter-spacing: -0.02em;
+    }
+    .about-h2 em {
+      font-style: italic; color: rgba(237,237,235,0.45); font-weight: 200;
+    }
+    .about-bio { max-width: 540px; margin-left: auto; margin-top: auto; }
+    .about-bio p {
+      font-size: 0.92rem; color: rgba(237,237,235,0.48);
+      line-height: 1.75; margin-bottom: 14px;
+    }
+
+    /* ── Stats strip ─────────────────────────────────────────── */
+    .stat-strip {
+      display: grid; grid-template-columns: repeat(3,1fr);
+            margin-top: 72px;
+    }
+    .stat-cell { padding: 44px 40px; border-right: 1px solid rgba(255,255,255,0.07); }
+    .stat-cell:last-child { border-right: none; }
+    .stat-n {
+      font-family: 'Archivo', sans-serif; font-weight: 900;
+      font-size: 4rem; line-height: 1; color: #EDEDEB;
+      margin-bottom: 10px; letter-spacing: -0.02em;
+    }
+    .stat-lab  { font-size: 0.75rem; color: #22D3EE; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 8px; }
+    .stat-desc { font-size: 0.8rem; color: rgba(237,237,235,0.38); line-height: 1.6; }
+
+    @media(max-width:900px){
+      #about { padding: 64px 24px 48px; }
+      .about-wrap { grid-template-columns: 1fr; gap: 40px; }
+      .about-bio { margin-left: 0; }
+      .ghost-num { font-size: 8rem; right: 16px; }
+      .stat-strip { grid-template-columns: 1fr; }
+      .stat-cell { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.07); }
+      .stat-cell:last-child { border-bottom: none; }
+    }
+
+    /* ── PROGRAM LIST section ───────────────────────────────── */
+    #programs {
+      padding: 80px 60px;
+      background: #09090F;
+          }
+    .programs-inner { max-width: 1100px; margin: 0 auto; }
+    .programs-title {
+      font-family: 'Archivo', sans-serif; font-weight: 700;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      letter-spacing: -0.02em; text-transform: uppercase;
+      color: #EDEDEB; margin: 24px 0 56px;
+    }
+    .programs-img {
+      width: 100%; height: auto; display: block;
+      border-radius: 4px;
+    }
+    @media(max-width:768px){
+      #programs { padding: 58px 24px; }
+      .programs-title { margin-bottom: 36px; }
+    }
+
+    /* ── CONTACT section ─────────────────────────────────────── */
+    #contact {
+      padding: 96px 60px 80px;
+      background: #161616 url('hero/3.png') center/cover no-repeat;
+      position: relative; text-align: center;
+    }
+    #contact::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: rgba(22,22,22,0.72);
+    }
+    .contact-ghost {
+      position: absolute; bottom: 0; right: 0;
+      font-family: 'Archivo', sans-serif; font-weight: 900;
+      font-size: clamp(6rem, 18vw, 15rem); line-height: 0.85;
+      color: rgba(255,255,255,0.04); pointer-events: none;
+      white-space: nowrap; letter-spacing: -0.04em; user-select: none;
+      line-height: 0.85; overflow: hidden; z-index: 1;
+    }
+    .contact-in { position: relative; z-index: 2; max-width: 600px; margin: 0; text-align: left; }
+    .contact-h2 {
+      font-family: 'Archivo', sans-serif; font-weight: 900;
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      line-height: 0.95; letter-spacing: -0.03em; margin-bottom: 24px;
+    }
+    .contact-sub {
+      font-size: 0.92rem; color: rgba(237,237,235,0.45);
+      line-height: 1.7; margin-bottom: 44px;
+    }
+    .contact-email {
+      display: block; font-family: 'Archivo', sans-serif; font-weight: 300;
+      font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+      color: #EDEDEB; text-decoration: none; letter-spacing: 0.04em;
+      border-bottom: 1px solid rgba(237,237,235,0.15);
+      padding-bottom: 6px; margin-bottom: 56px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .contact-email:hover { color: #22D3EE; border-color: #22D3EE; }
+    .contact-email { cursor: pointer; }
+    #copy-toast {
+      position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(12px);
+      background: rgba(30,30,30,0.95); color: #EDEDEB;
+      font-family: 'Space Grotesk', sans-serif; font-size: 0.8rem; letter-spacing: 0.06em;
+      padding: 10px 22px; border-radius: 100px;
+      border: 1px solid rgba(255,255,255,0.12);
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.22s, transform 0.22s;
+      z-index: 9999;
+    }
+    #copy-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .contact-divider {
+      width: 1px; height: 40px; background: rgba(255,255,255,0.1);
+      margin: 0 auto 40px;
+    }
+    .soc-row { display: flex; align-items: center; justify-content: flex-end; gap: 20px; flex-wrap: wrap; }
+    .soc-link { font-size: 0.68rem; color: rgba(237,237,235,0.38); letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; transition: color 0.2s; }
+    .soc-link:hover { color: #EDEDEB; }
+    .soc-sep { width: 3px; height: 3px; border-radius: 50%; background: rgba(237,237,235,0.2); }
+    @media(max-width:768px){ #contact { padding: 64px 24px 56px; } }
+
+    /* ── Timeline ───────────────────────────────────────────── */
+    #timeline {
+      padding: 80px 60px;
+      background: #1A1A1A;
+    }
+    .tl-inner { max-width: 1200px; margin: 0 auto; }
+    .tl-heading {
+      font-family: 'Archivo', sans-serif; font-weight: 700;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      color: #EDEDEB; letter-spacing: -0.02em; margin-bottom: 64px;
+    }
+    /* Stage: flex container — center line via ::before */
+    .tl-stage {
+      display: flex;
+      align-items: stretch;
+      position: relative;
+      height: 300px;
+      width: 100%;
+      padding: 0;
+    }
+    .tl-stage::before {
+      content: '';
+      position: absolute;
+      left: 0; right: 0; top: 50%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(200,150,90,0.3) 4%, rgba(200,150,90,0.3) 96%, transparent);
+    }
+
+    /* Each item: 2-row grid — equal halves so dot sits on center line */
+    .tl-item {
+      flex: 1;
+      display: grid;
+      grid-template-rows: 1fr auto 1fr;
+      align-items: center;
+      justify-items: center;
+      position: relative;
+    }
+    .tl-dot {
+      width: 9px; height: 9px; border-radius: 50%;
+      background: #22D3EE;
+      grid-row: 2;
+      position: relative; z-index: 2;
+      box-shadow: 0 0 0 3px rgba(200,150,90,0.15);
+    }
+    .tl-content {
+      width: 100%; text-align: center; padding: 0 12px;
+    }
+    .tl-item.top .tl-content  { grid-row: 1; align-self: end;   padding-bottom: 16px; }
+    .tl-item.bot .tl-content  { grid-row: 3; align-self: start; padding-top: 16px; }
+
+    /* Vertical stem: thin line connecting content to dot */
+    .tl-stem {
+      width: 1px; background: rgba(34,211,238,0.3);
+      position: absolute; left: 50%; transform: translateX(-50%);
+    }
+    .tl-item.top .tl-stem { bottom: 50%; height: 5%; top: auto; }
+    .tl-item.bot .tl-stem { top: 50%;    height: 5%; bottom: auto; }
+
+    .tl-date  { font-family: 'Archivo', sans-serif; font-weight: 500; font-size: 0.72rem; color: #22D3EE; letter-spacing: 0.12em; margin-bottom: 6px; }
+    .tl-name  { font-family: 'Archivo', sans-serif; font-weight: 400; font-size: 0.82rem; color: #EDEDEB; line-height: 1.4; margin-bottom: 4px; }
+    .tl-sub   { font-size: 0.72rem; color: rgba(237,237,235,0.38); line-height: 1.5; }
+    .tl-tag   {
+      display: inline-block; margin-top: 6px;
+      font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 2px 8px; border-radius: 100px;
+      border: 1px solid rgba(200,150,90,0.3); color: rgba(200,150,90,0.6);
+    }
+    @media(max-width:768px){ #timeline { padding: 64px 24px; } }
+
+    /* ── Footer ─────────────────────────────────────────────── */
+    footer {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 28px 60px;
+      background: transparent;
+          }
+    .foot-logo { font-family:'Archivo',sans-serif; font-weight:300; font-size:0.85rem; color:rgba(237,237,235,0.3); letter-spacing:0.18em; text-transform:uppercase; }
+    .foot-copy { font-size:0.72rem; color:rgba(237,237,235,0.22); letter-spacing:0.08em; }
+    @media(max-width:768px){ footer { padding: 22px 24px; } }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">KIMSANGMIN.</a>
+    <div class="nav-links">
+      <a href="works.html"   class="nav-link">Works</a>
+      <a href="project.html" class="nav-link">Project</a>
+      <a href="about.html"   class="nav-link active">About</a>
+    </div>
+    <div class="nav-dots" aria-label="메뉴">
+      <span></span><span></span><span></span>
+      <span></span><span></span><span></span>
+      <span></span><span></span><span></span>
+    </div>
+    <button id="mob-btn" aria-label="메뉴 열기">
+      <svg width="22" height="14" viewBox="0 0 22 14" fill="none">
+        <line x1="0" y1="1"  x2="22" y2="1"  stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="0" y1="7"  x2="22" y2="7"  stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="0" y1="13" x2="22" y2="13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+  <div id="mob-menu">
+    <a href="works.html">Works</a>
+    <a href="project.html">Project</a>
+    <a href="about.html" class="active">About</a>
+  </div>
+  <div class="nav-divider"></div>
+</nav>
+
+
+<!-- ================================================================
+     PAGE HEADER + ABOUT (shared background)
+================================================================ -->
+<div class="top-bg-wrap">
+
+<!-- Page header -->
+<div class="page-header">
+  <div class="page-header-ghost">ABOUT</div>
+  <div class="page-header-label r">3D MODELER &amp; DESIGNER</div>
+  <h1 class="r d1">KIM<br>SANGMIN.</h1>
+</div>
+
+
+<section id="about">
+  <div class="about-wrap">
+    <div>
+      <div class="sec-label r">
+        <span class="sec-num">/ 01</span>
+        <span class="sec-line"></span>
+        <span class="sec-tag">About</span>
+      </div>
+      <h2 class="about-h2 r d1">
+        3D 는(은) 무한한 가능성.<br>
+        화면과 현실 을 잇는<br>
+        일입니다.
+      </h2>
+    </div>
+    <div class="about-bio r d2">
+      <p>각 환경과 배경에 부여되는 것은 만드는 그래픽 / 모델러입니다.<br>오브젝트부터 맵과 공간까지 일관된 방향성으로 해당하는 세계를 구축하여<br>현실과 연결합니다.</p>
+      <p>좋은 공간과 오브젝트는 눈에 보이지 않는 감정을 만듭니다.<br>그 감정을 디자인하는 것이 제 일입니다.</p>
+    </div>
+  </div>
+  <div class="stat-strip">
+    <div class="stat-cell r">
+      <div class="stat-n">20<span style="font-size:2rem;font-weight:200;">+</span></div>
+      <div class="stat-lab">Projects Done</div>
+      <div class="stat-desc">인테리어 및 전시 포함.<br>페이지에 있는 프로젝트 외에 다양한 프로젝트를<br>경험 및 실행하였습니다.</div>
+    </div>
+    <div class="stat-cell r d1">
+      <div class="stat-n">5<span style="font-size:2rem;font-weight:200;">+</span></div>
+      <div class="stat-lab">Years of Experience</div>
+      <div class="stat-desc">인테리어 5년 경력을 통해 공간감과 스케일에 관한 능력과<br>디자인에 대한 감각을 높여왔습니다.</div>
+    </div>
+    <div class="stat-cell r d2">
+      <div class="stat-n">14<span style="font-size:2rem;font-weight:200;">+</span></div>
+      <div class="stat-lab">TOOLS</div>
+      <div class="stat-desc">총 14가지 이상의 툴을 숙련되게 사용이 가능하며<br>각각의 툴을 이용하여 활용이 가능합니다.</div>
+    </div>
+  </div>
+</section>
+
+</div><!-- /top-bg-wrap -->
+
+
+<!-- ================================================================
+     TIMELINE
+================================================================ -->
+<section id="timeline">
+  <div class="sec-label r">
+    <span class="sec-num">/ 02</span>
+    <span class="sec-line"></span>
+    <span class="sec-tag">Timeline</span>
+  </div>
+  <h2 class="tl-heading r d1">CAREER PATH</h2>
+  <div class="tl-inner">
+    <div class="r d2">
+      <div class="tl-stage">
+
+        <!-- 1 TOP -->
+        <div class="tl-item top">
+          <div class="tl-content">
+            <div class="tl-date">2014.03</div>
+            <div class="tl-name">연성대학교 실내건축과</div>
+            <div class="tl-sub">실내건축학 전공 입학</div>
+            <span class="tl-tag">Education</span>
+          </div>
+          <div class="tl-stem"></div>
+          <div class="tl-dot"></div>
+        </div>
+
+        <!-- 2 BOT -->
+        <div class="tl-item bot">
+          <div class="tl-dot"></div>
+          <div class="tl-stem"></div>
+          <div class="tl-content">
+            <div class="tl-date">2019.08</div>
+            <div class="tl-name">실내건축산업기사 취득</div>
+            <div class="tl-sub">한국산업인력공단</div>
+            <span class="tl-tag">License</span>
+          </div>
+        </div>
+
+        <!-- 3 TOP -->
+        <div class="tl-item top">
+          <div class="tl-content">
+            <div class="tl-date">2019.10 — 2020.01</div>
+            <div class="tl-name">(주)아주디자인그룹</div>
+            <div class="tl-sub">공사1부_현장감리</div>
+            <span class="tl-tag">Career</span>
+          </div>
+          <div class="tl-stem"></div>
+          <div class="tl-dot"></div>
+        </div>
+
+        <!-- 4 BOT -->
+        <div class="tl-item bot">
+          <div class="tl-dot"></div>
+          <div class="tl-stem"></div>
+          <div class="tl-content">
+            <div class="tl-date">2020.02</div>
+            <div class="tl-name">연성대학교 졸업</div>
+            <div class="tl-sub">실내건축과 전공학사</div>
+            <span class="tl-tag">Education</span>
+          </div>
+        </div>
+
+
+
+  <!-- 5 TOP -->
+        <div class="tl-item top">
+          <div class="tl-content">
+            <div class="tl-date">2021.02</div>
+            <div class="tl-name">연성대학교 졸업</div>
+            <div class="tl-sub">실내건축학과 전공심화과정</div>
+            <span class="tl-tag">Education</span>
+          </div>
+          <div class="tl-stem"></div>
+          <div class="tl-dot"></div>
+        </div>
+
+        <!-- 6 BOT -->
+        <div class="tl-item bot">
+          <div class="tl-dot"></div>
+          <div class="tl-stem"></div>
+          <div class="tl-content">
+            <div class="tl-date">2021.02 — 2023.12</div>
+            <div class="tl-name">(주)Lnk associates</div>
+            <div class="tl-sub">디자인팀_설계 및 3D업무</div>
+            <span class="tl-tag">Career</span>
+          </div>
+        </div>
+
+        <!-- 7 TOP -->
+        <div class="tl-item top">
+          <div class="tl-content">
+            <div class="tl-date">2024.01 — 2024.12</div>
+            <div class="tl-name">(주)Lnk associates</div>
+            <div class="tl-sub">제작연출_설계, 3D 및 현장감리</div>
+            <span class="tl-tag">Career</span>
+          </div>
+          <div class="tl-stem"></div>
+          <div class="tl-dot"></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ================================================================
+     PROGRAM LIST
+================================================================ -->
+<section id="programs">
+  <div class="sec-label r">
+    <span class="sec-num">/ 03</span>
+    <span class="sec-line"></span>
+    <span class="sec-tag">Skills</span>
+  </div>
+  <h2 class="programs-title r d1">PROGRAM LIST</h2>
+  <div class="programs-inner">
+    <div class="r d2">
+      <img src="program-list.png" alt="Program List" class="programs-img">
+    </div>
+  </div>
+</section>
+
+
+<!-- ================================================================
+     CONTACT
+================================================================ -->
+<section id="contact">
+  <div class="contact-ghost">CONTACT</div>
+  <div class="contact-in">
+    <div class="sec-label r">
+      <span class="sec-num">/ 04</span>
+      <span class="sec-line"></span>
+      <span class="sec-tag">Contact</span>
+      <span class="sec-line" style="background:linear-gradient(90deg,#22D3EE,transparent);"></span>
+    </div>
+    <h2 class="contact-h2 r d1">김   상   민</h2>
+    <p class="contact-sub r d2">KIM SANGMIN_GOM RYUNG</p>
+    <a href="mailto:jut5200@gmail.com" class="contact-email r d3" id="email-copy">jut5200@gmail.com</a>
+    <div id="copy-toast">클립보드로 복사 되었습니다</div>
+<div class="soc-row r d4">
+      <a href="https://www.facebook.com/profile.php?id=100004601988914" class="soc-link" target="_blank" rel="noopener noreferrer">Facebook</a>
+      <span class="soc-sep"></span>
+      <a href="https://www.instagram.com/sangmin_.k/" class="soc-link" target="_blank" rel="noopener noreferrer">Instagram</a>
+      <span class="soc-sep"></span>
+      <a href="https://www.linkedin.com/in/%EC%83%81%EB%AF%BC-%EA%B9%80-821885419/" class="soc-link" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <span class="soc-sep"></span>
+      <a href="https://www.gamejob.co.kr/User/Resume/View?R_NO=368340" class="soc-link" target="_blank" rel="noopener noreferrer">Gamejob</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- FOOTER -->
+<footer>
+  <span class="foot-logo">kim sangmin</span>
+  <span class="foot-copy">@2026 All rights reserved</span>
+</footer>
+
+
+<script>
+  /* Mobile menu */
+  document.getElementById('mob-btn').addEventListener('click', () => {
+    const m = document.getElementById('mob-menu');
+    m.style.display = m.style.display === 'block' ? 'none' : 'block';
+  });
+
+  /* Scroll reveal */
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('on'); observer.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.r').forEach(el => observer.observe(el));
+
+  /* Email copy */
+  const emailEl = document.getElementById('email-copy');
+  const toast   = document.getElementById('copy-toast');
+  let toastTimer;
+  emailEl.addEventListener('click', e => {
+    e.preventDefault();
+    navigator.clipboard.writeText(emailEl.textContent.trim()).then(() => {
+      clearTimeout(toastTimer);
+      toast.classList.add('show');
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 2000);
+    });
+  });
+</script>
+
+<script src="edit-mode.js"></script>
+<script src="copy-protect.js"></script>
+<script>
+(function(){
+  var nav = document.getElementById('nav');
+  var lastY = window.scrollY;
+  window.addEventListener('scroll', function(){
+    var y = window.scrollY;
+    if (y > lastY && y > 60) nav.classList.add('nav-hidden');
+    else nav.classList.remove('nav-hidden');
+    lastY = y;
+  }, { passive: true });
+})();
+</script></body>
+</html>

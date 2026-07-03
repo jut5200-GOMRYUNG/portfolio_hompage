@@ -1,0 +1,724 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,200;0,300;0,400;0,500;0,700;0,900;1,200;1,300&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    /* ── Base ───────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: #1A1A1A url('hero/7.png') center/cover no-repeat fixed;
+      color: #EDEDEB;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: rgba(18, 18, 18, 0.80);
+      z-index: 0;
+      pointer-events: none;
+    }
+    #nav, main, footer { position: relative; z-index: 1; }
+
+    ::-webkit-scrollbar       { width: 3px; }
+    ::-webkit-scrollbar-track { background: #1A1A1A; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
+
+    /* ── NAV ────────────────────────────────────────────────────── */
+    #nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200; transition: transform 0.3s ease;
+      background: transparent;
+      }
+    .nav-hidden { transform: translateY(-100%); }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 26px 60px;
+    }
+    .nav-logo {
+      font-family: 'Archivo', sans-serif;
+      font-weight: 300;
+      font-size: 1rem;
+      color: #EDEDEB;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      text-decoration: none;
+      user-select: none; margin-right: auto;
+    }
+    .nav-links { display: flex; align-items: center; gap: 44px; margin-right: 4%; }
+    .nav-link {
+      font-size: 0.65rem;
+      color: rgba(237,237,235,0.48);
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-link:hover  { color: #EDEDEB; }
+    .nav-link.active { color: #EDEDEB; }
+    .nav-dots {
+      display: grid;
+      grid-template-columns: repeat(3, 4px);
+      gap: 4px;
+      opacity: 0.35;
+      transition: opacity 0.2s;
+      cursor: pointer;
+    }
+    .nav-dots:hover { opacity: 0.75; }
+    .nav-dots span { width:3px; height:3px; border-radius:50%; background:#EDEDEB; display:block; }
+    #mob-btn  { display:none; background:none; border:none; cursor:pointer; color:rgba(237,237,235,0.55); }
+    #mob-menu {
+      display: none;
+      padding: 14px 24px 22px;
+      background: rgba(9,9,15,0.96); backdrop-filter: blur(24px);
+          }
+    #mob-menu a {
+      display: block; padding: 11px 0;
+      font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(237,237,235,0.45); text-decoration: none;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      transition: color 0.2s;
+    }
+    #mob-menu a:last-child { border-bottom: none; }
+    #mob-menu a:hover, #mob-menu a.active { color: #EDEDEB; }
+    .nav-divider { height:1px; width:50%; margin-left:auto; background:rgba(237,237,235,0.12); }
+    @media(max-width:900px){ .nav-divider { width:70%; } }
+    @media(max-width:900px){
+      .nav-links { display:none; margin-right: 4%; }
+      .nav-dots  { display:none; }
+      #mob-btn   { display:block; }
+      .nav-inner { padding: 20px 24px; }
+    }
+
+    /* ── MAIN SECTION ───────────────────────────────────────────── */
+    .projects-section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 0 60px 48px;
+      padding-top: 82px;
+      min-height: 0;
+    }
+
+    /* ── Header row ─────────────────────────────────────────────── */
+    .proj-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      padding: 48px 0 36px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      margin-bottom: 32px;
+      flex-shrink: 0;
+    }
+    .proj-header-left h1 {
+      font-family: 'Archivo', sans-serif;
+      font-weight: 300;
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      line-height: 1;
+      color: #EDEDEB;
+      letter-spacing: -0.02em;
+      margin-bottom: 14px;
+    }
+    .page-desc {
+      font-size: 0.8rem;
+      color: rgba(237,237,235,0.35);
+      line-height: 1.8;
+      max-width: 340px;
+    }
+
+    /* ── Arrow buttons ───────────────────────────────────────────── */
+    .arrow-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      flex-shrink: 0;
+    }
+    .arrow-hint {
+      font-size: 0.62rem;
+      color: rgba(237,237,235,0.28);
+      letter-spacing: 0.06em;
+      margin-bottom: 8px;
+    }
+    .arrow-group {
+      display: flex;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .arrow-btn {
+      width: 48px;
+      height: 48px;
+      border: 1px solid rgba(237,237,235,0.2);
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      color: rgba(237,237,235,0.7);
+    }
+    .arrow-btn:hover {
+      border-color: rgba(237,237,235,0.6);
+      background: rgba(237,237,235,0.05);
+      color: #EDEDEB;
+    }
+    .arrow-btn:disabled {
+      opacity: 0.2;
+      cursor: default;
+      background: transparent;
+    }
+    .arrow-btn svg { width: 18px; height: 18px; }
+
+    /* ── Carousel wrapper ────────────────────────────────────────── */
+    .carousel-wrap {
+      overflow: hidden;
+      height: 58vh;
+      min-height: 380px;
+      position: relative;
+      cursor: grab;
+      user-select: none;
+    }
+    .carousel-wrap.dragging { cursor: grabbing; }
+    .carousel {
+      display: flex;
+      gap: 3px;
+      height: 100%;
+      transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform;
+    }
+    .carousel.no-transition { transition: none; }
+
+    /* ── Vertical panel card (new design) ───────────────────────── */
+    .proj-card {
+      flex-shrink: 0;
+      width: calc((100vw - 129px) / 4);
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    /* Background media layer */
+    .card-bg {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+    .card-media {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s;
+      filter: brightness(0.52);
+      user-select: none;
+      pointer-events: none;
+      -webkit-user-drag: none;
+    }
+    .proj-card:hover .card-media {
+      filter: brightness(0.82);
+      transform: scale(1.04);
+    }
+
+    /* Gradient overlay */
+    .card-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.22) 0%,
+        rgba(0,0,0,0.0)  45%,
+        rgba(0,0,0,0.52) 100%
+      );
+      z-index: 1;
+      transition: opacity 0.4s;
+    }
+    .proj-card:hover .card-overlay { opacity: 0.55; }
+
+    /* Top-left: number + title */
+    .card-content {
+      position: absolute;
+      top: 22px;
+      left: 20px;
+      right: 14px;
+      z-index: 2;
+    }
+    .card-num {
+      display: block;
+      font-family: 'Archivo', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.1em;
+      margin-bottom: 7px;
+    }
+    .card-title {
+      font-family: 'Archivo', sans-serif;
+      font-weight: 700;
+      font-size: clamp(0.68rem, 1.05vw, 0.9rem);
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      line-height: 1.35;
+    }
+
+    /* Vertical rotated title at bottom-left */
+    .card-vert {
+      position: absolute;
+      bottom: 26px;
+      left: 16px;
+      z-index: 2;
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.54rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.28);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    /* ── Dot indicators ──────────────────────────────────────────── */
+    .dots-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 24px;
+      flex-shrink: 0;
+    }
+    .dot {
+      width: 20px;
+      height: 2px;
+      background: rgba(237,237,235,0.18);
+      transition: background 0.3s, width 0.3s;
+      cursor: pointer;
+    }
+    .dot.active {
+      width: 40px;
+      background: #EDEDEB;
+    }
+
+    /* ── Mobile ──────────────────────────────────────────────────── */
+    @media(max-width:900px){
+      .projects-section { padding: 0 24px 40px; padding-top: 100px; }
+      .proj-header { padding: 36px 0 28px; margin-bottom: 24px; }
+      .proj-card { width: calc((100vw - 51px) / 2); }
+    }
+    @media(max-width:600px){
+      .proj-card { width: calc(100vw - 48px); }
+    }
+
+    /* ── FOOTER ─────────────────────────────────────────────────── */
+    footer {
+            padding: 20px 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    .foot-logo { font-family:'Archivo',sans-serif; font-weight:300; font-size:0.875rem; color:rgba(237,237,235,0.4); letter-spacing:0.18em; text-transform:uppercase; text-decoration:none; }
+    .foot-copy { font-size:0.6rem; color:rgba(237,237,235,0.18); letter-spacing:0.12em; }
+    @media(max-width:900px){ footer { padding: 16px 24px; } }
+  </style>
+</head>
+<body>
+
+<!-- ================================================================
+     NAV
+================================================================ -->
+<nav id="nav">
+  <div class="nav-inner">
+
+    <a href="index.html" class="nav-logo">KIM SANGMIN</a>
+
+    <div class="nav-links">
+      <a href="works.html"   class="nav-link">Works</a>
+      <a href="project.html" class="nav-link active">Project</a>
+      <a href="about.html"   class="nav-link">About</a>
+    </div>
+
+    <div class="nav-dots">
+      <span></span><span></span><span></span>
+      <span></span><span></span><span></span>
+      <span></span><span></span><span></span>
+    </div>
+
+    <button id="mob-btn" aria-label="메뉴 열기">
+      <svg width="22" height="14" viewBox="0 0 22 14" fill="none">
+        <line x1="0" y1="1"  x2="22" y2="1"  stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="0" y1="7"  x2="22" y2="7"  stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="0" y1="13" x2="22" y2="13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </button>
+
+  </div>
+  <div id="mob-menu">
+    <a href="works.html">Works</a>
+    <a href="project.html" class="active">Project</a>
+    <a href="about.html">About</a>
+  </div>
+  <div class="nav-divider"></div>
+</nav>
+
+
+<!-- ================================================================
+     MAIN
+================================================================ -->
+<main class="projects-section">
+
+  <!-- Header -->
+  <div class="proj-header">
+    <div class="proj-header-left">
+      <h1>COMPANY<br>PROJECT</h1>
+      <p class="page-desc">전시 연출 / 인테리어 / 인터랙티브 콘텐츠 등<br>직장에서 작업해온 내용들을 소개합니다.</p>
+    </div>
+
+    <div class="arrow-wrap">
+      <p class="arrow-hint">화살표를 클릭하거나 좌우 드래그시 목록이 이동합니다</p>
+      <div class="arrow-group">
+        <button class="arrow-btn" id="btn-prev" aria-label="이전" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5M5 12l7 7M5 12l7-7"/>
+          </svg>
+        </button>
+        <button class="arrow-btn" id="btn-next" aria-label="다음">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Carousel -->
+  <div class="carousel-wrap">
+    <div class="carousel" id="carousel">
+
+      <!-- Card 1 -->
+      <div class="proj-card" data-href="project-detail.html">
+        <div class="card-bg">
+          <img src="PROJECT/1.%202021.01%20-%2008.%20G밸리%20산업박물관%20전시연출용역/0.jpg" alt="G밸리 산업박물관" class="card-media">
+        </div>
+        <div class="card-overlay"></div>
+        <div class="card-content">
+          <span class="card-num">01</span>
+          <h2 class="card-title">G밸리 산업박물관<br>전시연출용역</h2>
+        </div>
+        <span class="card-vert">G밸리 산업박물관 전시연출용역</span>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="proj-card" data-href="project-detail-2.html">
+        <div class="card-bg">
+          <img src="PROJECT/2.%202021.%2002.%20-%2006.%20전곡선사박물관%20복합체험공간/0.jpg" alt="전곡선사박물관" class="card-media">
+        </div>
+        <div class="card-overlay"></div>
+        <div class="card-content">
+          <span class="card-num">02</span>
+          <h2 class="card-title">전곡선사박물관<br>복합체험공간</h2>
+        </div>
+        <span class="card-vert">전곡선사박물관 복합체험공간</span>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="proj-card" data-href="project-detail-3.html">
+        <div class="card-bg">
+          <img src="PROJECT/3.%202021.05.%20-%2012.%20국립중앙박물관%20선사고대관%20백제가야실/0.jpg" alt="국립중앙박물관" class="card-media">
+        </div>
+        <div class="card-overlay"></div>
+        <div class="card-content">
+          <span class="card-num">03</span>
+          <h2 class="card-title">국립중앙박물관<br>선사고대관 백제가야실</h2>
+        </div>
+        <span class="card-vert">국립중앙박물관 선사고대관 백제가야실</span>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="proj-card" data-href="project-detail-4.html">
+        <div class="card-bg">
+          <img src="PROJECT/4.%202022.%2004.%20-%2009.%20제주민속자연사박물관%20실감컨텐츠/0.png" alt="제주민속자연사박물관" class="card-media">
+        </div>
+        <div class="card-overlay"></div>
+        <div class="card-content">
+          <span class="card-num">04</span>
+          <h2 class="card-title">제주민속자연사박물관<br>실감 컨텐츠</h2>
+        </div>
+        <span class="card-vert">제주민속자연사박물관 실감컨텐츠</span>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="proj-card" data-href="project-detail-5.html">
+        <div class="card-bg">
+          <img src="PROJECT/5.%202022.%2004.%20-%202022.%2011.%20전쟁기념관%20아카이브/0.png" alt="전쟁기념관 아카이브" class="card-media">
+        </div>
+        <div class="card-overlay"></div>
+        <div class="card-content">
+          <span class="card-num">05</span>
+          <h2 class="card-title">전쟁기념관<br>아카이브</h2>
+        </div>
+        <span class="card-vert">전쟁기념관 아카이브</span>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="proj-card" data-href="project-detail-6.html">
+        <div class="card-bg">
+          <img src="PROJECT/6.%202023.%2006.%20-%2011.%20전쟁기념관%20김상옥특별전/0.png" alt="전쟁기념관 김상옥특별전" class="card-media">
+        </div>
+        <div class="card-overlay"></div>
+        <div class="card-content">
+          <span class="card-num">06</span>
+          <h2 class="card-title">전쟁기념관<br>김상옥 특별전</h2>
+        </div>
+        <span class="card-vert">전쟁기념관 김상옥 특별전</span>
+      </div>
+
+      <!-- Card 7 -->
+      <div class="proj-card" data-href="project-detail-7.html">
+        <div class="card-bg">
+          <img src="PROJECT/7.%202024.%2002.%20-09.%20LG헬로비전%20상상플랫폼/0.png" alt="LG헬로비전 상상플랫폼" class="card-media">
+        </div>
+        <div class="card-overlay"></div>
+        <div class="card-content">
+          <span class="card-num">07</span>
+          <h2 class="card-title">LG헬로비전<br>상상플랫폼</h2>
+        </div>
+        <span class="card-vert">LG헬로비전 상상플랫폼</span>
+      </div>
+
+      <!-- Card 8 -->
+      <div class="proj-card" data-href="project-detail-8.html">
+        <div class="card-bg">
+          <img src="PROJECT/8.%202024.%2008.%20-%2012.%20KDB산업은행%20헤리티지%20홀/0.jpg" alt="KDB산업은행 헤리티지 홀" class="card-media">
+        </div>
+        <div class="card-overlay"></div>
+        <div class="card-content">
+          <span class="card-num">08</span>
+          <h2 class="card-title">KDB산업은행<br>헤리티지 홀</h2>
+        </div>
+        <span class="card-vert">KDB산업은행 헤리티지 홀</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Dot indicators -->
+  <div class="dots-row" id="dots-row"></div>
+
+</main>
+
+
+<!-- ================================================================
+     FOOTER
+================================================================ -->
+<footer>
+  <a href="index.html" class="foot-logo">KIM SANGMIN</a>
+  <span class="foot-copy">@2026 All rights reserved</span>
+</footer>
+
+
+<!-- ================================================================
+     SCRIPTS
+================================================================ -->
+<script>
+  // ── Nav mobile menu ──────────────────────────────────────────
+  const mobBtn  = document.getElementById('mob-btn');
+  const mobMenu = document.getElementById('mob-menu');
+  mobBtn.addEventListener('click', () => {
+    mobMenu.style.display = mobMenu.style.display === 'block' ? 'none' : 'block';
+  });
+  mobMenu.querySelectorAll('a').forEach(a =>
+    a.addEventListener('click', () => { mobMenu.style.display = 'none'; })
+  );
+
+  // ── Carousel logic ───────────────────────────────────────────
+  const carousel  = document.getElementById('carousel');
+  const cards     = Array.from(carousel.querySelectorAll('.proj-card'));
+  const btnPrev   = document.getElementById('btn-prev');
+  const btnNext   = document.getElementById('btn-next');
+  const dotsRow   = document.getElementById('dots-row');
+
+  function visibleCount() {
+    if (window.innerWidth <= 600) return 1;
+    if (window.innerWidth <= 900) return 2;
+    return 4;
+  }
+
+  let current    = 0;
+  const total    = cards.length;
+  const maxIndex = () => Math.max(0, total - Math.floor(visibleCount()));
+
+  function buildDots() {
+    dotsRow.innerHTML = '';
+    for (let i = 0; i < total; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i === current ? ' active' : '');
+      d.addEventListener('click', () => goTo(i));
+      dotsRow.appendChild(d);
+    }
+  }
+
+  function updateDots() {
+    dotsRow.querySelectorAll('.dot').forEach((d, i) => {
+      d.classList.toggle('active', i === current);
+    });
+  }
+
+  function goTo(index) {
+    const max = maxIndex();
+    current = Math.max(0, Math.min(index, max));
+
+    const gap       = 3;
+    const cardWidth = cards[0].getBoundingClientRect().width;
+    const offset    = current * (cardWidth + gap);
+    carousel.style.transform = `translateX(-${offset}px)`;
+
+    btnPrev.disabled = current === 0;
+    btnNext.disabled = current >= max;
+    updateDots();
+  }
+
+  btnPrev.addEventListener('click', () => goTo(current - 1));
+  btnNext.addEventListener('click', () => goTo(current + 1));
+
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      current = Math.min(current, maxIndex());
+      buildDots();
+      goTo(current);
+    }, 150);
+  });
+
+  buildDots();
+  goTo(0);
+
+  // ── Keyboard navigation ──────────────────────────────────────
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft')  goTo(current - 1);
+    if (e.key === 'ArrowRight') goTo(current + 1);
+  });
+
+  // ── Mouse drag support ───────────────────────────────────────
+  const wrap = document.querySelector('.carousel-wrap');
+  const GAP  = 3;
+
+  function cardW() { return cards[0].getBoundingClientRect().width; }
+
+  let isDragging   = false;
+  let dragStartX   = 0;
+  let dragDeltaX   = 0;
+  let dragStartIdx = 0;
+
+  function dragFloatIndex(deltaX) {
+    const max = maxIndex();
+    const sensitivity = max / window.innerWidth;
+    return Math.max(0, Math.min(max, dragStartIdx - deltaX * sensitivity));
+  }
+
+  wrap.addEventListener('mousedown', e => {
+    if (e.button !== 0) return;
+    isDragging   = true;
+    dragStartX   = e.clientX;
+    dragDeltaX   = 0;
+    dragStartIdx = current;
+    wrap.classList.add('dragging');
+    carousel.classList.add('no-transition');
+  });
+
+  document.addEventListener('mousemove', e => {
+    if (!isDragging) return;
+    dragDeltaX = e.clientX - dragStartX;
+    const offset = dragFloatIndex(dragDeltaX) * (cardW() + GAP);
+    carousel.style.transform = `translateX(-${offset}px)`;
+  });
+
+  function endDrag() {
+    if (!isDragging) return;
+    isDragging = false;
+    wrap.classList.remove('dragging');
+    carousel.classList.remove('no-transition');
+    goTo(Math.round(dragFloatIndex(dragDeltaX)));
+  }
+
+  document.addEventListener('mouseup',    endDrag);
+  document.addEventListener('mouseleave', endDrag);
+
+  carousel.addEventListener('click', e => {
+    if (Math.abs(dragDeltaX) > 5) e.preventDefault();
+  }, true);
+
+  // ── Touch ────────────────────────────────────────────────────
+  let touchStartX   = 0;
+  let touchDeltaX   = 0;
+  let touchStartIdx = 0;
+
+  function touchFloatIndex(deltaX) {
+    const max = maxIndex();
+    const sensitivity = max / window.innerWidth;
+    return Math.max(0, Math.min(max, touchStartIdx - deltaX * sensitivity));
+  }
+
+  carousel.addEventListener('touchstart', e => {
+    touchStartX   = e.touches[0].clientX;
+    touchDeltaX   = 0;
+    touchStartIdx = current;
+    carousel.classList.add('no-transition');
+  }, { passive: true });
+
+  carousel.addEventListener('touchmove', e => {
+    touchDeltaX = e.touches[0].clientX - touchStartX;
+    const offset = touchFloatIndex(touchDeltaX) * (cardW() + GAP);
+    carousel.style.transform = `translateX(-${offset}px)`;
+  }, { passive: true });
+
+  carousel.addEventListener('touchend', () => {
+    carousel.classList.remove('no-transition');
+    goTo(Math.round(touchFloatIndex(touchDeltaX)));
+  });
+
+  // ── 카드 클릭 → 상세 페이지 이동 ───────────────────────────
+  cards.forEach(card => {
+    card.addEventListener('click', () => {
+      if (Math.abs(dragDeltaX) > 5 || Math.abs(touchDeltaX) > 5) return;
+      const href = card.getAttribute('data-href');
+      if (href) location.href = href;
+    });
+  });
+</script>
+
+
+<script src="edit-mode.js"></script>
+<script src="copy-protect.js"></script>
+<script>
+(function(){
+  var nav = document.getElementById('nav');
+  var lastY = window.scrollY;
+  window.addEventListener('scroll', function(){
+    var y = window.scrollY;
+    if (y > lastY && y > 60) nav.classList.add('nav-hidden');
+    else nav.classList.remove('nav-hidden');
+    lastY = y;
+  }, { passive: true });
+})();
+</script></body>
+</html>
+
