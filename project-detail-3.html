@@ -561,8 +561,8 @@
         <div class="gallery-viewer-v2">
           <div class="gallery-slides-v2" id="gallery-slides"></div>
           <div class="gallery-bar-v2">
-            <button class="gal-nav-v" id="gal-prev">&#8249; PREV</button>
-            <button class="gal-nav-v" id="gal-next">NEXT &#8250;</button>
+            <button class="gal-nav-v" id="gal-prev">&#8249; PREV PAGE</button>
+            <button class="gal-nav-v" id="gal-next">NEXT PAGE &#8250;</button>
           </div>
           <div class="gallery-counter-bar">
             <span class="gal-counter-v2" id="gal-counter">(1 / 1)</span>
@@ -791,15 +791,14 @@
         s.classList.toggle('active', i === idx);
       });
       counter.textContent = `(${idx + 1} / ${imgs.length})`;
-      btnPrev.disabled = idx === 0;
-      btnNext.disabled = idx === imgs.length - 1;
+
       thumbsEl.querySelectorAll('.gal-thumb-item-v').forEach((t, i) => t.classList.toggle('active', i === idx));
       const act = thumbsEl.querySelectorAll('.gal-thumb-item-v')[idx];
       if (act) act.scrollIntoView({ behavior:'smooth', block:'nearest' });
     }
 
-    btnPrev.addEventListener('click', () => { if (idx > 0) { idx--; update(); } });
-    btnNext.addEventListener('click', () => { if (idx < imgs.length - 1) { idx++; update(); } });
+    btnPrev.addEventListener('click', () => { window.location.href = 'project-detail-2.html'; });
+    btnNext.addEventListener('click', () => { window.location.href = 'project-detail-4.html'; });
 
     // Keyboard ← → (only when Overview tab is visible)
     document.addEventListener('keydown', e => {
