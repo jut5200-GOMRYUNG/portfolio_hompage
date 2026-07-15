@@ -810,6 +810,13 @@
       thumbsEl.addEventListener('click',function(e){if(_tMov){e.stopPropagation();_tMov=false;}},true);
     })();
 
+    // wheel: 이미지 탐색
+    thumbsEl.addEventListener('wheel', function(e) {
+      e.preventDefault();
+      if (e.deltaY > 0) { if (idx < imgs.length - 1) { idx++; update(); } }
+      else              { if (idx > 0)               { idx--; update(); } }
+    }, { passive: false });
+
     function update() {
       slides.querySelectorAll('.gallery-slide').forEach((s, i) => {
         s.classList.toggle('active', i === idx);
